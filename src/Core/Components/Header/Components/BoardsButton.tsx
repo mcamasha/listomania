@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useState, useCallback, useContext} from 'react';
+import {useState, useCallback} from 'react';
 import ReactModal from 'react-modal';
 
 /**

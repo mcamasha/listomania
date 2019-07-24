@@ -5,20 +5,12 @@ import App from './Routers';
 import * as serviceWorker from './serviceWorker';
 import {I18nextProvider} from 'react-i18next';
 import i18next from 'i18next';
-import header_en from "./assets/Translations/en/header.json";
-import header_ru from "./assets/Translations/ru/header.json";
+import resources from './Configs/i18n'
 
 i18next.init({
     interpolation: { escapeValue: false },
     lng: 'en',
-    resources: {
-        en: {
-            header: header_en
-        },
-        ru: {
-            header: header_ru
-        },
-    },
+    resources
 });
 
 ReactDOM.render(

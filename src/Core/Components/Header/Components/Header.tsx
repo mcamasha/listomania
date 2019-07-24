@@ -2,7 +2,7 @@ import React from 'react';
 import {LeftSideHeader} from './LeftSideHeader';
 import {RightSideHeader} from './RightSiteHeader';
 import {Logo} from './Logo';
-import '../../../../Styles/Header.scss';
+import 'Styles/Header.scss';
 import {withTranslation} from 'react-i18next';
 
 /**
