@@ -44,6 +44,7 @@
   },
   "devDependencies": {
     "@types/react-modal": "^3.8.2",
-    "@types/react-router-dom": "^4.3.4"
+    "@types/react-router-dom": "^4.3.4",
+    "redux-devtools-extension": "^2.13.8"
   }
 }

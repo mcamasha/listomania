@@ -1,4 +1,6 @@
-// Replace [] to initialState
-export function reducer(state = [], _action: any) {
-    return state;
-}
+import {combineReducers} from 'redux'
+import {CoreReducer} from '../Core/Reducers/Reducers'
+
+export default combineReducers({
+    CoreReducer
+})

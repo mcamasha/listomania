@@ -1,8 +1,9 @@
 import {ICoreReduxStore} from '../Models';
 import {CORE} from '../Actions/ActionTypes';
+import {ELanguage} from '../Enums';
 
 const initialState: ICoreReduxStore = {
-    language: 'en'
+    language: ELanguage.ENGLISH
 }
 
 /**
@@ -16,7 +17,7 @@ export const CoreReducer = (state: ICoreReduxStore = initialState, action: any) 
         case CORE.CHANGE_LANGUAGE:
           return {
             ...state,
-            language: action.payload
+            language: action.language
           }
         default:
           return state

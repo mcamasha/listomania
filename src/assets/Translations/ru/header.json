@@ -1,5 +1,8 @@
 {
     "boardsButton": {
         "title": "Доски"
+    },
+    "ChangeLanguageModal": {
+        "headerTitle": "Изменить язык"
     }
 }

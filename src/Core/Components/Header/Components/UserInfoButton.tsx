@@ -2,9 +2,10 @@ import * as React from 'react';
 import {useState, useCallback} from 'react';
 import {useDispatch} from 'react-redux';
 import ReactModal from 'react-modal';
-import {CORE} from '../../../Actions/ActionTypes';
-import {ContentModal} from '../../ContentModal/Components/ContentModal';
-import {IContentModalConfig} from '../../ContentModal/Models';
+import {CORE} from 'Core/Actions/ActionTypes';
+import {ContentModal} from 'Core/Components/ContentModal/Components/ContentModal';
+import {IContentModalConfig} from 'Core/Components/ContentModal/Models';
+import {ELanguage} from 'Core/Enums';
 
 /**
  * Properties of component.
@@ -21,32 +22,47 @@ interface IProps {
 export const UserInfoButton = (props: IProps) => {
     const dispatch = useDispatch()
 
-    const [showModal, setShowModal] = useState<boolean>(false);
-
     const handleCloseModal = useCallback(() => {
         setShowModal(false);
+        setConfigModal(getInitialContentModalConfig());
     }, [])
 
     const handleOpenModal = useCallback(() => {
         setShowModal(true);
     }, [])
 
-    const handleChangeLanguage = useCallback(() => {
-        dispatch({type: CORE.CHANGE_LANGUAGE})
+    const handleChangeLanguage = useCallback((event)=> {
+        dispatch({type: CORE.CHANGE_LANGUAGE, language: event.target.value});
     }, [])
 
-    const handleClickLanguageButton = useCallback(() => {
-
+    const handleClickChangeLanguageButton = useCallback(() => {
+        setConfigModal(getChangeLanguageContentModalConfig);
     }, [])
 
-    const getContentModalConfig = useCallback((): IContentModalConfig => {
+    const getInitialContentModalConfig = useCallback((): IContentModalConfig => {
         return {
+            headerTitle: 'login', //login from redux
             data: [
-                <button>Change language</button>
+                <button onClick={handleClickChangeLanguageButton}>Change language</button>
             ],
-            headerTitle: 'login' //login from redux
         }
     }, [])
+
+    const getChangeLanguageContentModalConfig = useCallback((): IContentModalConfig => {
+        return {
+            headerTitle: props.t('ChangeLanguageModal.headerTitle'),
+            data: [
+                <div>
+                    <div><button onClick={handleChangeLanguage} value={ELanguage.CZECH}>Čeština</button></div>
+                    <div><button onClick={handleChangeLanguage} value={ELanguage.ENGLISH}>English</button></div>
+                    <div><button onClick={handleChangeLanguage} value={ELanguage.RUSSIAN}>Русский</button></div>
+                </div>
+            ],
+        }
+    }, [])
+
+    const [showModal, setShowModal] = useState<boolean>(false);
+    const [configModal, setConfigModal] = useState<IContentModalConfig>(getInitialContentModalConfig());
 
     return (
         <div>
@@ -64,7 +80,7 @@ export const UserInfoButton = (props: IProps) => {
                 }}
             >
                 <ContentModal
-                    config={getContentModalConfig()}
+                    config={configModal}
                     onClose={handleCloseModal}
                 />
             </ReactModal>

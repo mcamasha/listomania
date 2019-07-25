@@ -1,5 +1,8 @@
 {
     "boardsButton": {
         "title": "Boards"
+    },
+    "ChangeLanguageModal": {
+        "headerTitle": "Change language"
     }
 }
