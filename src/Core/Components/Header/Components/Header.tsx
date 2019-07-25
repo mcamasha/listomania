@@ -22,7 +22,7 @@ const Header = (props: IProps) => {
         <div className="header">
             <LeftSideHeader t={props.t} />
             <Logo />
-            <RightSideHeader />
+            <RightSideHeader t={props.t} />
         </div>
     )
 }

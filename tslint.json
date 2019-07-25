@@ -1,0 +1,9 @@
+{
+    "rules": {
+        "no-trailing-whitespace": true,
+        "no-debugger": true,
+        "no-console": true,
+        "no-var-keyword": true,
+        "prefer-object-spread": true
+    }
+}

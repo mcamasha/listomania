@@ -19,3 +19,7 @@ code {
 .search--icon {
   content: '\f002';
 }
+
+.gray {
+  color: #6b778c;
+}

@@ -4,7 +4,7 @@ import {Header} from "../Core/Components/Header";
 import Boards from "../Modules/Boards";
 import {Provider} from 'react-redux'
 import {store} from '../Store/store'
-import {withTranslation} from 'react-i18next';
+import {MainPageWrapper} from "../Modules/MainPage/Components/MainPageWrapper";
 
 const App = () => {
     return (
@@ -13,7 +13,7 @@ const App = () => {
                     <div>
                         <Header />
 
-                        {/* <Route exact path="/" component={MainPage} /> */}
+                        <Route exact path="/" component={MainPageWrapper} />
                         <Route path="/boards" component={Boards} />
                         {/* <Route path="/topics" component={Topics} /> */}
                     </div>
