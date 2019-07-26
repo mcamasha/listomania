@@ -4,4 +4,5 @@
 export interface IContentModalConfig {
     headerTitle: string;
     data: JSX.Element[];
+    hasBackLink?: boolean;
 }

@@ -1,26 +1,36 @@
 import * as React from 'react';
-import {useState, useCallback} from 'react';
+import {useState, useCallback, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import ReactModal from 'react-modal';
-import {CORE} from 'Core/Actions/ActionTypes';
 import {ContentModal} from 'Core/Components/ContentModal/Components/ContentModal';
 import {IContentModalConfig} from 'Core/Components/ContentModal/Models';
 import {ELanguage} from 'Core/Enums';
+import {changeLanguage} from 'Core/Actions/Actions';
+import i18next from 'i18next';
 
 /**
  * Properties of component.
  *
  * @prop {Function} t Function for translation.
+ * @prop {ELanguage} language
  */
 interface IProps {
     t: Function;
+    language: ELanguage;
 }
 
 /**
  * Component - user info button for header.
  */
 export const UserInfoButton = (props: IProps) => {
+    const {language} = props;
+
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        i18next.changeLanguage(props.language);
+        setConfigModal(getChangeLanguageContentModalConfig());
+    }, [language])
 
     const handleCloseModal = useCallback(() => {
         setShowModal(false);
@@ -31,8 +41,8 @@ export const UserInfoButton = (props: IProps) => {
         setShowModal(true);
     }, [])
 
-    const handleChangeLanguage = useCallback((event)=> {
-        dispatch({type: CORE.CHANGE_LANGUAGE, language: event.target.value});
+    const handleChangeLanguage = useCallback((event) => {
+        dispatch(changeLanguage(event.target.value));
     }, [])
 
     const handleClickChangeLanguageButton = useCallback(() => {

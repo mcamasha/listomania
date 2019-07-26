@@ -1,6 +1,6 @@
 import React from "react";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {Header} from "../Core/Components/Header";
+import Header from "../Core/Components/Header"; // Modules
 import Boards from "../Modules/Boards";
 import {Provider} from 'react-redux'
 import {store} from '../Store/store'
@@ -8,10 +8,11 @@ import {MainPageWrapper} from "../Modules/MainPage/Components/MainPageWrapper";
 import {I18nextProvider} from "react-i18next";
 import i18next from 'i18next';
 import resources from '../Configs/i18n'
+import {ELanguage} from "Core/Enums";
 
 i18next.init({
-    interpolation: { escapeValue: false },
-    lng: 'en',
+    interpolation: {escapeValue: false},
+    lng: ELanguage.ENGLISH,
     resources
 });
 

@@ -4,27 +4,53 @@ import {RightSideHeader} from './RightSiteHeader';
 import {Logo} from './Logo';
 import 'Styles/Header.scss';
 import {withTranslation} from 'react-i18next';
+import { ELanguage } from 'Core/Enums';
+import { connect } from 'react-redux';
+import {compose} from 'redux';
 
 /**
  * Properties of component.
  *
  * @prop {Function} t Function for translation.
  */
-interface IProps {
+interface IOwnProps {
     t: Function;
 }
+
+interface IStateProps {
+    language: ELanguage;
+}
+
+type TProps = IStateProps & IOwnProps;
 
 /**
  * Component - left side of header.
  */
-const Header = (props: IProps) => {
+const Header = (props: TProps): JSX.Element => {
+    const {
+        language,
+        t
+    } = props;
+
     return (
         <div className="header">
-            <LeftSideHeader t={props.t} />
+            <LeftSideHeader t={t} />
             <Logo />
-            <RightSideHeader t={props.t} />
+            <RightSideHeader
+                t={t}
+                language={language}
+            />
         </div>
     )
 }
 
-export default withTranslation('header')(Header);
+const mapStateToProps = (state: any): IStateProps => {
+    return {
+        language: state.CoreReducer.language // TODO: replace CoreReducer to Core
+    }
+}
+
+export const HeaderContainer = compose<React.SFC>(
+    withTranslation('header'),
+    connect(mapStateToProps)
+)(Header);

@@ -1,3 +1,3 @@
-import Header from './Components/Header';
+import {HeaderContainer} from './Components/Header'
 
-export {Header};
+export default HeaderContainer;
