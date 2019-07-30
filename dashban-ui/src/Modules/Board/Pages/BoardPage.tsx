@@ -1,10 +1,12 @@
 import {isEmpty}  from 'lodash';
 import * as React from 'react';
 import {withTranslation} from 'react-i18next';
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import {connect, useDispatch} from 'react-redux';
+import {compose, Dispatch} from 'redux';
 import {IList, ICard} from '../Models';
 import {List} from '../Components/List';
+import {IBoardActions, BoardActions} from '../Actions/Actions'
+import {BoardService} from '../Services/Services';
 
 /**
  * Properties of component.
@@ -19,7 +21,11 @@ interface IStateProps {
     lists: IList[];
 }
 
-type TProps = IStateProps & IOwnProps;
+interface IDispatchProps {
+    actions: IBoardActions;
+}
+
+type TProps = IStateProps & IOwnProps & IDispatchProps;
 
 /**
  * Component - board page which contains lists of cards - the main content of app.
@@ -27,15 +33,21 @@ type TProps = IStateProps & IOwnProps;
 const BoardPage = (props: TProps): JSX.Element => {
     const {
         t,
-        lists
+        lists,
+        actions
     } = props;
 
+    const dispatch = useDispatch();
     const addListButtonTitle: string = !isEmpty(lists) ? 'Add another list' : 'Add a list';
 
     const handleAddCard = (listIndex: number, title: string) => {
         const updatedCards = !isEmpty(lists[listIndex].cards) ? [...lists[listIndex].cards] : [];
 
         updatedCards.push({title});
+    };
+
+    const handleUpdateCards = (): void => {
+        actions.
     };
 
     const renderCards = (cards: ICard[]) => {
@@ -60,6 +72,7 @@ const BoardPage = (props: TProps): JSX.Element => {
                             key={index}
                             t={t}
                             onUpdateCards={handleUpdateCards}
+                            listIndex={index}
                         />
                     )
                 })}
@@ -81,7 +94,13 @@ const mapStateToProps = (state: any): IStateProps => { // TODO: replace any
     }
 }
 
+const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
+    return {
+        actions: new BoardActions(new BoardService, dispatch)
+    }
+}
+
 export const BoardPageContainer = compose<React.SFC>(
     withTranslation('boardPage'),
-    connect(mapStateToProps)
+    connect(mapStateToProps, mapDispatchToProps)
 )(BoardPage);
