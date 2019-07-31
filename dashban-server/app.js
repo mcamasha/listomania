@@ -1,119 +1,61 @@
-import express from 'express';
-import db from './db/db';
-import bodyParser from 'body-parser';
+var express       = require('express');
+var path          = require('path');
+var favicon       = require('serve-favicon');
+var logger        = require('morgan');
+var cookieParser  = require('cookie-parser');
+var bodyParser    = require('body-parser');
 
-const PORT = 5000;
+var mongodb       = require('./db');
 
-const app = express();
+var routes = require('./routes/routes');
 
+var app = express();
+
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(favicon(path.join(__dirname, 'public', 'img', 'favicon.ico')));
+app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/boards', (req, res) => {
-    res.status(200).send({
-        success: 'true',
-        message: 'boards retrieved successfully',
-        boards: db
-    })
+app.use('/', routes);
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-app.get('/board/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
+// error handlers
 
-    db.map((todo) => {
-        if (todo.id === id) {
-            return res.status(200).send({
-                success: 'true',
-                message: 'board retrieved successfully',
-                todo,
-            });
-        }
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
     });
-    return res.status(404).send({
-        success: 'false',
-        message: 'board does not exist',
-    });
-})
+  });
+  app.locals.pretty = true;
+}
 
-app.post('/boards', (req, res) => {
-    if (!req.body.title) {
-        return res.status(400).send({
-            success: 'false',
-            message: 'title is required'
-        });
-    }
-    const board = {
-        id: db.length + 1,
-        title: req.body.title
-    }
-    db.push(board);
-    return res.status(201).send({
-        success: 'true',
-        message: 'board added successfully',
-        board
-    })
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
 });
 
-app.delete('/board/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
-  
-    db.map((board, index) => {
-      if (board.id === id) {
-         db.splice(index, 1);
-         return res.status(200).send({
-           success: 'true',
-           message: 'board deleted successfuly',
-         });
-      }
-    });
-  
-  
-      return res.status(404).send({
-        success: 'false',
-        message: 'board not found',
-      });
-});
+mongodb.connectDB();
 
-app.put('/list/:id', (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    let listFound;
-    let itemIndex;
-    db.map((list, index) => {
-      if (list.id === id) {
-        listFound = list;
-        itemIndex = index;
-      }
-    });
-  
-    if (!listFound) {
-      return res.status(404).send({
-        success: 'false',
-        message: 'list not found',
-      });
-    }
-  
-    if (!req.body.title) {
-      return res.status(400).send({
-        success: 'false',
-        message: 'title is required',
-      });
-    }
-  
-    const updatedList = {
-      id: listFound.id,
-      title: req.body.title || listFound.title,
-      description: req.body.description || listFound.description,
-    };
-  
-    db.splice(itemIndex, 1, updatedList);
-  
-    return res.status(201).send({
-      success: 'true',
-      message: 'List updated successfully',
-      updatedList
-    });
-});
-
-app.listen(PORT, () => {
-    console.log(`server running on port ${PORT}`)
-})
+module.exports = app;
