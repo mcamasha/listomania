@@ -3,7 +3,7 @@ import * as React from 'react';
 import {withTranslation} from 'react-i18next';
 import {connect, useDispatch} from 'react-redux';
 import {compose, Dispatch} from 'redux';
-import {IList, ICard} from '../Models';
+import {IList, ICard, IBoard} from '../Models';
 import {List} from '../Components/List';
 import {IBoardActions, BoardActions} from '../Actions/Actions'
 import {BoardService} from '../Services/Services';
@@ -18,7 +18,7 @@ interface IOwnProps {
 }
 
 interface IStateProps {
-    lists: IList[];
+    board: IBoard;
 }
 
 interface IDispatchProps {
@@ -33,21 +33,23 @@ type TProps = IStateProps & IOwnProps & IDispatchProps;
 const BoardPage = (props: TProps): JSX.Element => {
     const {
         t,
-        lists,
+        board,
         actions
     } = props;
 
     const dispatch = useDispatch();
-    const addListButtonTitle: string = !isEmpty(lists) ? 'Add another list' : 'Add a list';
+    const addListButtonTitle: string = !isEmpty(board.lists) ? 'Add another list' : 'Add a list';
+
+    const handleUpdateBoard = (board: IBoard): void => {
+        actions.updateBoard(board);
+    };
 
     const handleAddCard = (listIndex: number, title: string) => {
+        const {lists} = board;
         const updatedCards = !isEmpty(lists[listIndex].cards) ? [...lists[listIndex].cards] : [];
 
         updatedCards.push({title});
-    };
-
-    const handleUpdateCards = (): void => {
-        actions.
+        handleUpdateBoard(updatedCards);
     };
 
     const renderCards = (cards: ICard[]) => {
@@ -61,7 +63,7 @@ const BoardPage = (props: TProps): JSX.Element => {
     const renderLists = () => {
         return (
             <div>
-                {lists.map((list: IList, index: number) => {
+                {board.lists.map((list: IList, index: number) => {
                     const {cards, title} = list;
 
                     return (
@@ -82,7 +84,7 @@ const BoardPage = (props: TProps): JSX.Element => {
 
     return (
         <div className="board-page">
-            {!isEmpty(lists) && renderLists()}
+            {!isEmpty(board.lists) && renderLists()}
             <button>{addListButtonTitle}</button>
         </div>
     )
@@ -90,7 +92,7 @@ const BoardPage = (props: TProps): JSX.Element => {
 
 const mapStateToProps = (state: any): IStateProps => { // TODO: replace any
     return {
-        lists: state.BoardReducer.lists // TODO: replace CoreReducer to Core
+        board: state.BoardReducer.board // TODO: replace BoardReducer to Board
     }
 }
 
