@@ -1,8 +1,8 @@
 var mongoose = require('mongoose');
 var statsd = require('./statsd');
 
-var schema = mongoose.Schema({value: String});
-var Values = mongoose.model('values', schema);
+var schema = mongoose.Schema({board: String});
+var Boards = mongoose.model('boards', schema);
 
 module.exports = {
     connectDB : function() {
@@ -10,15 +10,15 @@ module.exports = {
     },
 
     updateGauge : function() {
-        Values.count(function(err, result) {
+        Boards.count(function(err, result) {
             if(!err) {
                 statsd.gauge('values', result);
             }
         })
     },
 
-    getVal : function(res) {
-        Values.find(function(err, result) {
+    getBoardById : function(res) {
+        Boards.find(function(err, result) {
             if (err) {
                 console.log(err);
                 res.send('database error');
@@ -35,7 +35,7 @@ module.exports = {
     },
 
     sendVal : function(val, res) {
-        var request = new Values({value: val});
+        var request = new Boards({value: val});
         request.save((err, result) => {
             if (err) {
                 console.log(err);
@@ -49,7 +49,7 @@ module.exports = {
     },
 
     delVal : function(id) {
-        Values.remove({_id: id}, (err) => {
+        Boards.remove({_id: id}, (err) => {
             if (err) {
                 console.log(err);
             }
