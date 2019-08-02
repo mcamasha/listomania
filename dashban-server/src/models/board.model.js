@@ -1,15 +1,15 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const ProductSchema = new Schema({
+const BoardSchema = new Schema({
     name: {
         type: String,
-        reuired: true
+        required: true
     },
-    price: {
-        type: Number,
+    lists: {
+        type: Array,
         required: true
     }
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('board', BoardSchema);

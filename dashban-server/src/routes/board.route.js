@@ -1,26 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
-const product_controller = require('../controllers/board.controller');
+const board_controller = require('../controllers/board.controller');
 
 /**
  * Get board by id.
  */
-router.get('/:id', product_controller.board_details);
+router.get('/:id', board_controller.board_details);
 
 /**
  * Get all user's boards;
  */
-router.get('/boards', product_controller.board_details); // replace
-
+router.get('/', board_controller.board_all_details);
 /**
- * Change board by id.
+ * Update board by id.
  */
-router.put('/:id', product_controller.board_update);
+router.put('/:id', board_controller.board_update);
 
 /**
  * Delete board by id.
  */
-router.delete('/:id', product_controller.board_delete);
+router.delete('/:id', board_controller.board_delete);
 
 module.exports = router;

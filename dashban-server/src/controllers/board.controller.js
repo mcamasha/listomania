@@ -3,10 +3,10 @@ const Board = require('../models/board.model');
 /**
  * Создать запись.
  */
-module.exports.product_create = function (req, res, next) {
-    Product.create({
+module.exports.board_create = function (req, res, next) {
+    Board.create({
         name: req.body.name,
-        price: req.body.price
+        links: req.body.price
     }, function (err) {
         if (err) return next(err);
         res.send('Product created successfully!');
@@ -28,39 +28,39 @@ module.exports.product_create = function (req, res, next) {
 };
 
 /**
- * Получить список всех записей.
+ * Get all boards.
  */
-module.exports.board_all_details = function (req, res) {
-    Product.find({}, (err, items) => {
-        res.send(items);
+module.exports.board_all_details = function (req, res) {    
+    Board.find({}, (err, boards) => {
+        res.send(boards);
     });
 }
 
 /**
- * Получить запись по id.
+ * Get board by id.
  */
 module.exports.board_details = function (req, res, next) {
-    Product.findById(req.params.id, function (err, product) {
+    Board.findById(req.params.id, function (err, board) {
         if (err) return next(err);
-        res.send(product);
+        res.send(board);
     });
 };
 
 /**
- * Изменить запись по id.
+ * Update board by id.
  */
 module.exports.board_update = function (req, res, next) {
-    Product.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, product) {
+    Board.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, board) {
         if (err) return next(err);
-        res.send('Product udpated.');
+        res.send(board);
     });
 };
 
 /**
- * Удалить запись по id.
+ * Delete board by id.
  */
 module.exports.board_delete = function (req, res, next) {
-    Product.findByIdAndRemove(req.params.id, function (err) {
+    Board.findByIdAndRemove(req.params.id, function (err) {
         if (err) return next(err);
         res.send('Deleted successfully!');
     });
