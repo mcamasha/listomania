@@ -1,13 +1,18 @@
 import {IBoard} from '../Models';
 import {BOARD} from '../Actions/ActionTypes';
+import {AxiosPromise} from 'axios';
 
 // move to Models
 interface IBoardReduxStore {
-    board: IBoard;
+    board: AxiosPromise<IBoard>;
 }
 
 const initialState: IBoardReduxStore = {
-    board: null
+    board: {
+        status: AsyncDataStatus.IDLE,
+        data: null,
+        error: null
+    }
 }
 
 /**
@@ -24,6 +29,10 @@ export const BoardReducer = (state: IBoardReduxStore = initialState, action: any
                 board: initialState.board
             }
         case BOARD.GET_BOARD:
+            return {
+                ...state,
+                board: action.board
+            }
         case BOARD.UPDATE_BOARD:
             return {
                 ...state,
