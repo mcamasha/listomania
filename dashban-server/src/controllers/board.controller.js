@@ -6,25 +6,11 @@ const Board = require('../models/board.model');
 module.exports.board_create = function (req, res, next) {
     Board.create({
         name: req.body.name,
-        links: req.body.price
+        links: req.body.links
     }, function (err) {
         if (err) return next(err);
-        res.send('Product created successfully!');
+        res.send('Board created successfully!');
     });
-
-    /*
-        Можно создать запись и так:
-
-        let product = new Product({
-            name: req.body.name,
-            price: req.body.price
-        });
-
-        product.save(function (err) {
-            if (err) return next(err);
-            res.send('Product Created successfully')
-        });
-    */
 };
 
 /**
@@ -50,7 +36,7 @@ module.exports.board_details = function (req, res, next) {
  * Update board by id.
  */
 module.exports.board_update = function (req, res, next) {
-    Board.findByIdAndUpdate(req.params.id, { $set: req.body }, function (err, board) {
+    Board.findByIdAndUpdate(req.params.id, { $set: req.body }, {new: true}, function (err, board) {
         if (err) return next(err);
         res.send(board);
     });
