@@ -1,8 +1,8 @@
-import { ICoreReduxStore } from '../Models';
-import { CORE_ACTIONS } from '../Actions/ActionTypes';
+import { ILoginReduxStore } from '../Models';
+import { LOGIN_ACTIONS } from '../Actions/ActionTypes';
 import { AsyncDataStatus, AsyncActionStatus } from 'Store/Models';
 
-const initialState: ICoreReduxStore = {
+const initialState: ILoginReduxStore = {
     user: {
         status: AsyncDataStatus.IDLE,
         data: null,
@@ -13,21 +13,21 @@ const initialState: ICoreReduxStore = {
 /**
  * Reducer for core redux store.
  *
- * @param {ICoreReduxStore} state
+ * @param {ILoginReduxStore} state
  * @param {any} action
  */
-const CoreReducer = (state: ICoreReduxStore = initialState, action: any): ICoreReduxStore => {
+const LoginReducer = (state: ILoginReduxStore = initialState, action: any): ILoginReduxStore => {
     switch (action.type) {
-        case `${CORE_ACTIONS.CHANGE_LANGUAGE}_${AsyncActionStatus.PENDING}`:
+        case `${LOGIN_ACTIONS.LOGIN}_${AsyncActionStatus.PENDING}`:
             return {
                 ...state,
                 user: {
-                    status: AsyncDataStatus.IDLE, // TODO
+                    status: AsyncDataStatus.IDLE,
                     data: null,
                     error: null
                 }
             }
-        case `${CORE_ACTIONS.CHANGE_LANGUAGE}_${AsyncActionStatus.FULFILLED}`:
+        case `${LOGIN_ACTIONS.LOGIN}_${AsyncActionStatus.FULFILLED}`:
             return {
                 ...state,
                 user: {
@@ -36,7 +36,7 @@ const CoreReducer = (state: ICoreReduxStore = initialState, action: any): ICoreR
                     error: null
                 }
             }
-        case `${CORE_ACTIONS.CHANGE_LANGUAGE}_${AsyncActionStatus.REJECTED}`:
+        case `${LOGIN_ACTIONS.LOGIN}_${AsyncActionStatus.REJECTED}`:
             return {
                 ...state,
                 user: {
@@ -50,4 +50,4 @@ const CoreReducer = (state: ICoreReduxStore = initialState, action: any): ICoreR
     }
 }
 
-export {CoreReducer as CoreModule};
+export {LoginReducer as LoginModule};

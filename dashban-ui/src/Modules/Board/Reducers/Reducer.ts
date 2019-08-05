@@ -1,11 +1,6 @@
-import {IBoard} from '../Models';
-import {BOARD} from '../Actions/ActionTypes';
-import {AxiosPromise} from 'axios';
-
-// move to Models
-interface IBoardReduxStore {
-    board: AxiosPromise<IBoard>;
-}
+import { IBoardReduxStore } from '../Models';
+import { BOARD } from '../Actions/ActionTypes';
+import { AsyncDataStatus, IAppStore, AsyncActionStatus } from 'Store/Models';
 
 const initialState: IBoardReduxStore = {
     board: {
@@ -28,17 +23,39 @@ export const BoardReducer = (state: IBoardReduxStore = initialState, action: any
                 ...state,
                 board: initialState.board
             }
-        case BOARD.GET_BOARD:
+        case `${BOARD.GET_BOARD}_${AsyncActionStatus.PENDING}`:
+        case `${BOARD.UPDATE_BOARD}_${AsyncActionStatus.PENDING}`:
             return {
                 ...state,
-                board: action.board
+                board: {
+                    data: null,
+                    error: null,
+                    status: AsyncDataStatus.IDLE
+                }
             }
-        case BOARD.UPDATE_BOARD:
+        case `${BOARD.UPDATE_BOARD}_${AsyncActionStatus.FULFILLED}`:
+        case `${BOARD.GET_BOARD}_${AsyncActionStatus.FULFILLED}`:
             return {
                 ...state,
-                board: action.board
+                board: {
+                    status: AsyncDataStatus.SUCCESS,
+                    data: action.board,
+                    error: null
+                }
+            }
+        case `${BOARD.UPDATE_BOARD}_${AsyncActionStatus.REJECTED}`:
+        case `${BOARD.GET_BOARD}_${AsyncActionStatus.REJECTED}`:
+            return {
+                ...state,
+                board: {
+                    status: AsyncDataStatus.FAILED,
+                    data: null,
+                    error: action.error
+                }
             }
         default:
             return state
     }
 }
+
+export {BoardReducer as BoardModule};

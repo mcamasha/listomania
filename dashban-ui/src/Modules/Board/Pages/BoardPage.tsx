@@ -1,7 +1,8 @@
 import {isEmpty}  from 'lodash';
 import * as React from 'react';
+import {useState, useEffect} from 'react';
 import {withTranslation} from 'react-i18next';
-import {connect, useDispatch} from 'react-redux';
+import {connect} from 'react-redux';
 import {compose, Dispatch} from 'redux';
 import {IList, ICard, IBoard} from '../Models';
 import {List} from '../Components/List';
@@ -37,25 +38,28 @@ const BoardPage = (props: TProps): JSX.Element => {
         actions
     } = props;
 
-    const dispatch = useDispatch();
     const addListButtonTitle: string = !isEmpty(board.lists) ? 'Add another list' : 'Add a list';
+    const [updatedBoard, setUpdatedBoard] = useState<IBoard>(null); 
+    
+    useEffect(() => {
+        actions.updateBoard(updatedBoard);
 
-    const handleUpdateBoard = (board: IBoard): void => {
-        actions.updateBoard(board);
-    };
+        // Указываем, как сбросить этот эффект:
+        return () => actions.clearBoardData();
+    }, [updatedBoard]);
 
     const handleAddCard = (listIndex: number, title: string) => {
         const {lists} = board;
         const updatedCards = !isEmpty(lists[listIndex].cards) ? [...lists[listIndex].cards] : [];
 
         updatedCards.push({title});
-        handleUpdateBoard(updatedCards);
+        setUpdatedBoard(updatedBoard);
     };
 
     const renderCards = (cards: ICard[]) => {
         return (
             <div>
-                {cards.map((card) => )}
+                {cards.map((card) => <div> 1</div>)}
             </div>
         )
     };
@@ -73,7 +77,7 @@ const BoardPage = (props: TProps): JSX.Element => {
                             title={title}
                             key={index}
                             t={t}
-                            onUpdateCards={handleUpdateCards}
+                            onUpdateCards={() => console.log(1)}
                             listIndex={index}
                         />
                     )

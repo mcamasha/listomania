@@ -9,15 +9,6 @@ const board_controller = require('../controllers/board.controller');
 router.get('/:id', board_controller.board_details);
 
 /**
- * Создать запись.
- */
-router.post('/create', board_controller.board_create);
-
-/**
- * Get all user's boards;
- */
-router.get('/', board_controller.board_all_details);
-/**
  * Update board by id.
  */
 router.put('/:id', board_controller.board_update);

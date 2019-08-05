@@ -1,10 +1,9 @@
 import React from "react";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import Header from "../Core/Components/Header"; // Modules
-import Boards from "../Modules/Boards";
+import Header from 'Core/Components/Header'; // Modules
 import {Provider} from 'react-redux'
 import {store} from '../Store/store'
-import {MainPageWrapper} from "../Modules/MainPage/Components/MainPageWrapper";
+import MainPage from '../Modules/MainPage';
 import {I18nextProvider} from "react-i18next";
 import i18next from 'i18next';
 import resources from '../Configs/i18n'
@@ -24,8 +23,12 @@ const App = () => {
                     <div>
                         <Header />
 
-                        <Route exact path="/" component={MainPageWrapper} />
-                        <Route path="/boards" component={Boards} />
+                        <Route
+                            exact
+                            path={["/", "/boards"]}
+                            component={MainPage}
+                        />
+                        {/* <Route path="/board" component={Board} />                         */}
                         {/* <Route path="/topics" component={Topics} /> */}
                     </div>
                 </Router>

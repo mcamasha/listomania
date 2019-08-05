@@ -2,10 +2,11 @@ import {IBoard, IList, ICard} from '../Models';
 import {Dispatch} from 'redux';
 import {IBoardService} from '../Services/Services';
 import {BOARD} from './ActionTypes';
+import { AxiosPromise } from 'axios';
 
 export interface IBoardActions {
-    getBoardById(boardId: string): Promise<IBoard>;
-    updateBoard(board: IBoard): Promise<IBoard>;
+    getBoardById(boardId: string): AxiosPromise<IBoard>;
+    updateBoard(board: IBoard): AxiosPromise<IBoard>;
     clearBoardData(): void;
 }
 
@@ -15,7 +16,7 @@ export class BoardActions<T extends IBoardService> implements IBoardActions {
         protected dispatch: Dispatch
     ) {}
 
-    async getBoardById(boardId: string): Promise<IBoard> {
+    getBoardById(boardId: string): AxiosPromise<IBoard> {
         this.dispatch({type: `${BOARD.GET_BOARD}_BEGIN`});
 
         return this.service.getBoardById(boardId)
@@ -31,7 +32,7 @@ export class BoardActions<T extends IBoardService> implements IBoardActions {
             );
     };
 
-    async updateBoard(board: IBoard): Promise<IBoard> {
+    updateBoard(board: IBoard): AxiosPromise<IBoard> {
         this.dispatch({type: `${BOARD.UPDATE_BOARD}_BEGIN`});
 
         return this.service.updateBoard(board)

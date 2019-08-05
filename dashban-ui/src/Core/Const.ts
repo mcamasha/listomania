@@ -1,1 +1,1 @@
-export const siteUrl = location.href;
+export const siteUrl = window.location.href;

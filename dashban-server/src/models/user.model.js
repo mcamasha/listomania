@@ -1,31 +1,27 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const BoardSchema = new Schema({
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true
     },
-    lists: {
+    boards: {
         type: Array,
         required: true
     },
-    backgroundColor: {
-        type: String,
-        required: false
-    },
-    isFavorite: {
-        type: Boolean,
-        required: true
-    },
-    visibility: {
+    email: {
         type: String,
         required: true
     },
-    lastVisitData: {
+    password: {
+        type: String,
+        required: true
+    },
+    date: {
         type: Date,
-        required: true
+        default: Date.now
     }
 });
 
-module.exports = mongoose.model('board', BoardSchema);
+module.exports = mongoose.model('user', UserSchema);

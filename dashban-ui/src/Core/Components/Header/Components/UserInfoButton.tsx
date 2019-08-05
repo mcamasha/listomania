@@ -1,36 +1,39 @@
+import {get} from 'lodash';
 import * as React from 'react';
-import {useState, useEffect} from 'react';
-import {useDispatch} from 'react-redux';
+import { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
-import {ContentModal} from 'Core/Components/ContentModal/Components/ContentModal';
-import {IContentModalConfig} from 'Core/Components/ContentModal/Models';
-import {ELanguage} from 'Core/Enums';
-import {changeLanguage} from 'Core/Actions/Actions';
+import { ContentModal } from 'Core/Components/ContentModal/Components/ContentModal';
+import { IContentModalConfig } from 'Core/Components/ContentModal/Models';
+import { ELanguage } from 'Core/Enums';
+import { ICoreActions } from 'Core/Actions/Actions';
 import i18next from 'i18next';
+import { IUser } from 'Core/Models';
 
 /**
  * Properties of component.
  *
  * @prop {Function} t Function for translation.
- * @prop {ELanguage} language
+ * @prop {ICoreActions} actions
+ * @prop {IUser} user
  */
 interface IProps {
     t: Function;
-    language: ELanguage;
+    actions: ICoreActions;
+    user: IUser;
 }
 
 /**
  * Component - user info button for header.
  */
 export const UserInfoButton = (props: IProps) => {
-    const {language} = props;
+    const { actions, user } = props;
 
-    const dispatch = useDispatch()
+    const [newLanguage, setNewLanguage] = useState<ELanguage>();
 
     useEffect(() => {
-        i18next.changeLanguage(props.language);
+        actions.changeLanguage(user.id, newLanguage);
         setConfigModal(getChangeLanguageContentModalConfig());
-    }, [language])
+    }, [newLanguage])
 
     const handleCloseModal = () => {
         setShowModal(false);
@@ -42,7 +45,7 @@ export const UserInfoButton = (props: IProps) => {
     };
 
     const handleChangeLanguage = (event: any) => {
-        dispatch(changeLanguage(event.currentTarget.value));
+        setNewLanguage(event.currentTarget.value);
     };
 
     const handleClickChangeLanguageButton = () => {
@@ -51,7 +54,7 @@ export const UserInfoButton = (props: IProps) => {
 
     const getInitialContentModalConfig = (): IContentModalConfig => {
         return {
-            headerTitle: 'login', //login from redux
+            headerTitle: user.login,
             data: [
                 <button onClick={handleClickChangeLanguageButton}>Change language</button>
             ]

@@ -1,3 +1,5 @@
+import { AsyncData } from "Store/Models";
+
 export interface ICard {
     title: string;
     description?: string;
@@ -14,4 +16,8 @@ export interface IBoard {
     id: string;
     title: string;
     lists?: IList[];
+}
+
+export interface IBoardReduxStore {
+    board: AsyncData<IBoard>
 }
