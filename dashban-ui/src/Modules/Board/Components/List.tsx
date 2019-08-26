@@ -15,7 +15,7 @@ interface IProps {
 
 export const List = (props: IProps) => {
     const {title, cards, onUpdateCards, onAddCard, listIndex} = props;
-    
+
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [titleNewCard, setTitleNewCard] = useState<string>('');
 
@@ -50,14 +50,16 @@ export const List = (props: IProps) => {
         return (
             <div>
                 {cards.map((card: ICard, index: number) => {
-                    <input
-                        key={index}
-                        // onClick={handleOpenCardModal}
-                        disabled
-                    >
-                        {card.title}
-                        <button>Change Icon</button>
-                    </input>
+                    return (
+                        <input
+                            key={index}
+                            // onClick={handleOpenCardModal}
+                            disabled
+                        >
+                            {card.title}
+                            <button>Change Icon</button>
+                        </input>
+                    );
                 })}
             </div>
         );

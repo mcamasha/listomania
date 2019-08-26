@@ -1,4 +1,4 @@
-import {isEmpty}  from 'lodash';
+import {isEmpty, get}  from 'lodash';
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import {withTranslation} from 'react-i18next';
@@ -8,6 +8,8 @@ import {IList, ICard, IBoard} from '../Models';
 import {List} from '../Components/List';
 import {IBoardActions, BoardActions} from '../Actions/Actions'
 import {BoardService} from '../Services/Services';
+import {IAppStore, AsyncData} from 'Store/Models';
+import {RouteComponentProps} from 'react-router';
 
 /**
  * Properties of component.
@@ -18,15 +20,19 @@ interface IOwnProps {
     t: Function;
 }
 
+interface IMatchParams {
+    id: string;
+}
+
 interface IStateProps {
-    board: IBoard;
+    board: AsyncData<IBoard>;
 }
 
 interface IDispatchProps {
     actions: IBoardActions;
 }
 
-type TProps = IStateProps & IOwnProps & IDispatchProps;
+type TProps = IStateProps & IOwnProps & IDispatchProps & RouteComponentProps<IMatchParams>;
 
 /**
  * Component - board page which contains lists of cards - the main content of app.
@@ -35,21 +41,35 @@ const BoardPage = (props: TProps): JSX.Element => {
     const {
         t,
         board,
-        actions
+        board: {
+            data: boardData,
+            status: boardStatus
+        },
+        actions,
+        match
     } = props;
 
-    const addListButtonTitle: string = !isEmpty(board.lists) ? 'Add another list' : 'Add a list';
-    const [updatedBoard, setUpdatedBoard] = useState<IBoard>(null); 
-    
+    const boardHasLists: boolean = !!get(board, 'data.lists', false);
+    const addListButtonTitle: string = boardHasLists ? 'Add another list' : 'Add a list';
+    const [updatedBoard, setUpdatedBoard] = useState<IBoard>(null);
+    const boardId: string = match.params.id;
+
     useEffect(() => {
-        actions.updateBoard(updatedBoard);
+        actions.getBoardById(boardId);
 
         // Указываем, как сбросить этот эффект:
         return () => actions.clearBoardData();
-    }, [updatedBoard]);
+    }, []);
+
+    // useEffect(() => {
+    //     actions.updateBoard(updatedBoard);
+
+    //     // Указываем, как сбросить этот эффект:
+    //     return () => actions.clearBoardData();
+    // }, [updatedBoard]);
 
     const handleAddCard = (listIndex: number, title: string) => {
-        const {lists} = board;
+        const {lists} = boardData;
         const updatedCards = !isEmpty(lists[listIndex].cards) ? [...lists[listIndex].cards] : [];
 
         updatedCards.push({title});
@@ -67,7 +87,7 @@ const BoardPage = (props: TProps): JSX.Element => {
     const renderLists = () => {
         return (
             <div>
-                {board.lists.map((list: IList, index: number) => {
+                {boardData.lists.map((list: IList, index: number) => {
                     const {cards, title} = list;
 
                     return (
@@ -88,15 +108,15 @@ const BoardPage = (props: TProps): JSX.Element => {
 
     return (
         <div className="board-page">
-            {!isEmpty(board.lists) && renderLists()}
+            {boardHasLists && renderLists()}
             <button>{addListButtonTitle}</button>
         </div>
     )
 }
 
-const mapStateToProps = (state: any): IStateProps => { // TODO: replace any
+const mapStateToProps = (state: IAppStore): IStateProps => { // TODO: replace any
     return {
-        board: state.BoardReducer.board // TODO: replace BoardReducer to Board
+        board: state.BoardModule.board // TODO: replace BoardReducer to Board
     }
 }
 
@@ -106,7 +126,7 @@ const mapDispatchToProps = (dispatch: Dispatch): IDispatchProps => {
     }
 }
 
-export const BoardPageContainer = compose<React.SFC>(
+export default compose<React.SFC>(
     withTranslation('boardPage'),
     connect(mapStateToProps, mapDispatchToProps)
 )(BoardPage);

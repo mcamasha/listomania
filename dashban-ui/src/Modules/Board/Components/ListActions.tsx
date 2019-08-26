@@ -5,7 +5,7 @@ import {ContentModal} from 'Core/Components/ContentModal/Components/ContentModal
 import {IContentModalConfig} from 'Core/Components/ContentModal/Models';
 
 interface IProps {
-    
+
 }
 
 export const ListActions = (props: IProps) => {

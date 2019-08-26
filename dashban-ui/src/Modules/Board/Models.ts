@@ -1,4 +1,6 @@
 import { AsyncData } from "Store/Models";
+import {EBoardBackgroundColor, EBoardVisibility} from "Modules/MainPage/Enums";
+import {IBoardView} from "Modules/MainPage/Models";
 
 export interface ICard {
     title: string;
@@ -12,9 +14,7 @@ export interface IList {
     cards?: ICard[];
 }
 
-export interface IBoard {
-    id: string;
-    title: string;
+export interface IBoard extends IBoardView {
     lists?: IList[];
 }
 

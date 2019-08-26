@@ -60,7 +60,7 @@ export const LoginPage = (props: TProps) => {
     const validationForm = () => {
         return login.length > 0 && password.length > 0;
     }
-    
+
     return (
         <div>
             <div>
@@ -71,7 +71,7 @@ export const LoginPage = (props: TProps) => {
                 />
             </div>
             <div>
-                <span>Password:</span> 
+                <span>Password:</span>
                 <input
                     onChange={handlePasswordChange}
                     placeholder="Enter password..."

@@ -8,6 +8,7 @@ import {I18nextProvider} from "react-i18next";
 import i18next from 'i18next';
 import resources from '../Configs/i18n'
 import {ELanguage} from "Core/Enums";
+import BoardPage from "Modules/Board/Pages/BoardPage";
 
 i18next.init({
     interpolation: {escapeValue: false},
@@ -28,7 +29,7 @@ const App = () => {
                             path={["/", "/boards"]}
                             component={MainPage}
                         />
-                        {/* <Route path="/board" component={Board} />                         */}
+                        <Route path="/board/:id" component={BoardPage} />
                         {/* <Route path="/topics" component={Topics} /> */}
                     </div>
                 </Router>

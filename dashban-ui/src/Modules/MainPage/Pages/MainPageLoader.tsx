@@ -71,7 +71,8 @@ class MainPageLoader extends Component<TProps, IState> {
             isFavorite: false,
             isRecentViewed: false,
             name: 'first',
-            visibility: EBoardVisibility.PRIVATE
+            visibility: EBoardVisibility.PRIVATE,
+            id: '123'
         }];
 
         return (
@@ -105,7 +106,7 @@ class MainPageLoader extends Component<TProps, IState> {
                                 actions={actions}
                                 boards={boards}
                                 t={t}
-                                userId={"2424"} //
+                                userId={"2424"} // TODO
                             />
                         ) : (
                                 <div>1</div>

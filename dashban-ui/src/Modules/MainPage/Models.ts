@@ -1,8 +1,8 @@
 import { EBoardBackgroundColor, EBoardVisibility } from "./Enums";
-import { IBoard } from "Modules/Board/Models"; // move to common
 import { AsyncData } from "Store/Models";
 
 export interface IBoardView {
+    id: string;
     name: string;
     backgroundColor: EBoardBackgroundColor;
     isFavorite: boolean;
