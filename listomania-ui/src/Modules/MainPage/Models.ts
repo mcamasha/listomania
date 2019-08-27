@@ -1,15 +1,13 @@
-import { EBoardBackgroundColor, EBoardVisibility } from "./Enums";
 import { AsyncData } from "Store/Models";
 
-export interface IBoardView {
+export interface ITopicView {
     id: string;
     name: string;
-    backgroundColor: EBoardBackgroundColor;
     isFavorite: boolean;
-    visibility: EBoardVisibility;
+    isPrivate: boolean;
     isRecentViewed: boolean;
 }
 
 export interface IMainPageReduxStore {
-    boards: AsyncData<IBoardView[]>
+    boards: AsyncData<ITopicView[]>
 }

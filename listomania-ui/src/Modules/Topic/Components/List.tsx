@@ -1,38 +1,38 @@
 import {isEmpty, cloneDeep} from 'lodash';
 import * as React from 'react';
 import {useState} from 'react';
-import {ICard} from '../Models';
+import {IListItem} from '../Models';
 import {ListActions} from './ListActions';
 
 interface IProps {
     t: Function;
-    title: string;
-    cards?: ICard[];
-    onAddCard: (listIndex: number, title: string, callback?: () => void) => void;
-    onUpdateCards: (updatedCards: ICard[]) => void;
+    name: string;
+    items?: IListItem[];
+    onAddItem: (listIndex: number, title: string, callback?: () => void) => void;
+    onUpdateItems: (updatedCards: IListItem[]) => void;
     listIndex: number;
 }
 
 export const List = (props: IProps) => {
-    const {title, cards, onUpdateCards, onAddCard, listIndex} = props;
+    const {name, items, onUpdateItems, onAddItem, listIndex} = props;
 
     const [isAdding, setIsAdding] = useState<boolean>(false);
     const [titleNewCard, setTitleNewCard] = useState<string>('');
 
-    const hasCards: boolean = !isEmpty(cards);
-    const addButtonTitle: string = hasCards ? 'Add another card' : 'Add card';
+    const hasItems: boolean = !isEmpty(items);
+    const addButtonTitle: string = hasItems ? 'Add another item' : 'Add item';
 
-    const handleCardBlur = (cardIndex: number) => (event: React.FocusEvent<HTMLInputElement>): void => {
-        const updatedCard: ICard = {...cards[cardIndex]};
-        const updatedCards: ICard[] = cloneDeep<ICard[]>(cards);
-        updatedCard.title = event.currentTarget.value;
+    const handleItemBlur = (cardIndex: number) => (event: React.FocusEvent<HTMLInputElement>): void => {
+        const updatedCard: IListItem = {...items[cardIndex]};
+        const updatedCards: IListItem[] = cloneDeep<IListItem[]>(items);
+        updatedCard.name = event.currentTarget.value;
         updatedCards[cardIndex] = updatedCard;
 
-        onUpdateCards(updatedCards);
+        onUpdateItems(updatedCards);
     };
 
     const handleAddCard = (): void => {
-        onAddCard(listIndex, titleNewCard, () => {
+        onAddItem(listIndex, titleNewCard, () => {
             setTitleNewCard('');
             setIsAdding(false);
         });
@@ -49,14 +49,14 @@ export const List = (props: IProps) => {
     const renderCards = (): JSX.Element => {
         return (
             <div>
-                {cards.map((card: ICard, index: number) => {
+                {items.map((item: IListItem, index: number) => {
                     return (
                         <input
                             key={index}
                             // onClick={handleOpenCardModal}
                             disabled
                         >
-                            {card.title}
+                            {item.name}
                             <button>Change Icon</button>
                         </input>
                     );
@@ -81,10 +81,10 @@ export const List = (props: IProps) => {
     return (
         <div>
             <div>
-                <span>{title}</span>
+                <span>{name}</span>
                 <ListActions />
             </div>
-            {hasCards && renderCards()}
+            {hasItems && renderCards()}
             {isAdding ? (
                 renderIsAddingBlock()
             ) : (
