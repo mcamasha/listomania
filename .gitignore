@@ -1,10 +1,10 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/dashban-ui/node_modules
+/listomania-ui/node_modules
 /.pnp
 .pnp.js
-/dashban-server/node_modules
+/listomania-server/node_modules
 
 
 # testing
