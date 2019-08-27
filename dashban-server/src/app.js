@@ -5,8 +5,7 @@ const db_config = require('../config/db');
 require('./config/passport')(passport);
 
 // Импортируем роуты.
-const board = require('./routes/board.route');
-const boards = require('./routes/boards.route'); 
+const topic = require('./routes/topic.route');
 const users = require('./routes/users.route');
 
 // Инициализируем express приложение.
@@ -15,7 +14,7 @@ const app = express();
 // Устанавливаем соединение между mongoose и mongodb.
 const mongoose = require('mongoose');
 const mongoDB = process.env.MONGODB_URI || db_config.url;
-mongoose.connect(mongoDB, { useNewUrlParser: true }); 
+mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -28,8 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Подключаем роуты.
-app.use('/board', board);
-app.use('/boards', boards);
+app.use('/topic', topic);
 app.use('/users', users);
 
 let port = 1234;

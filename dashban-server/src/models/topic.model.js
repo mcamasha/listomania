@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const BoardSchema = new Schema({
+const TopicSchema = new Schema({
     name: {
         type: String,
         required: true
@@ -10,17 +10,21 @@ const BoardSchema = new Schema({
         type: Array,
         required: true
     },
-    backgroundColor: {
-        type: String,
+    tags: {
+        type: Array,
         required: false
     },
     isFavorite: {
         type: Boolean,
         required: true
     },
-    visibility: {
+    isPrivate: {
         type: String,
         required: true
+    },
+    description: {
+        type: String,
+        required: false
     },
     lastVisitData: {
         type: Date,
@@ -28,4 +32,4 @@ const BoardSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('board', BoardSchema);
+module.exports = mongoose.model('topic', topicSchema);

@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-    name: {
+    login: {
         type: String,
         required: true
     },
-    boards: {
+    topics: {
         type: Array,
         required: true
     },
@@ -17,10 +17,6 @@ const UserSchema = new Schema({
     password: {
         type: String,
         required: true
-    },
-    date: {
-        type: Date,
-        default: Date.now
     }
 });
 
